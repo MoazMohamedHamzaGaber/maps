@@ -10,6 +10,7 @@ class CustomGoogleMaps extends StatefulWidget {
 
 class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
   late CameraPosition initialCameraPosition;
+  late GoogleMapController googleMapController;
 
   @override
   void initState() {
@@ -21,15 +22,45 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
   }
 
   @override
+  void dispose() {
+    googleMapController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return GoogleMap(
-      cameraTargetBounds: CameraTargetBounds(
-        LatLngBounds(
-          northeast: LatLng(30.094453269704278, 31.33155580236429),
-          southwest: LatLng(29.932365393897765, 31.034043873636804),
+    return Stack(
+      children: [
+        GoogleMap(
+          // cameraTargetBounds: CameraTargetBounds(
+          //   LatLngBounds(
+          //     northeast: LatLng(30.094453269704278, 31.33155580236429),
+          //     southwest: LatLng(29.932365393897765, 31.034043873636804),
+          //   ),
+          // ),
+          onMapCreated: (controller) {
+            googleMapController = controller;
+          },
+          initialCameraPosition: initialCameraPosition,
         ),
-      ),
-      initialCameraPosition: initialCameraPosition,
+        Positioned(
+          bottom: 16,
+          right: 16,
+          left: 16,
+          child: ElevatedButton(
+            onPressed: () {
+              CameraPosition newCameraPosition = CameraPosition(
+                zoom: 12,
+                target: LatLng(31.200515566474515, 29.961085975707423),
+              );
+              googleMapController.animateCamera(
+                CameraUpdate.newCameraPosition(newCameraPosition),
+              );
+            },
+            child: Text('Change Location'),
+          ),
+        ),
+      ],
     );
   }
 }
