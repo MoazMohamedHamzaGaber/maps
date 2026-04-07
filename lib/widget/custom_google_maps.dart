@@ -27,11 +27,13 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
     super.dispose();
   }
 
+  bool isDark=true;
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         GoogleMap(
+          initialCameraPosition: initialCameraPosition,
           // cameraTargetBounds: CameraTargetBounds(
           //   LatLngBounds(
           //     northeast: LatLng(30.094453269704278, 31.33155580236429),
@@ -40,8 +42,9 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
           // ),
           onMapCreated: (controller) {
             googleMapController = controller;
+            initMapStyle();
           },
-          initialCameraPosition: initialCameraPosition,
+
         ),
         Positioned(
           bottom: 16,
@@ -63,4 +66,13 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
       ],
     );
   }
+  void initMapStyle() async{
+    var nightMapStyle = await DefaultAssetBundle.of(context).loadString(
+        'assets/map_styles/night_map_style.json');
+
+    googleMapController.setMapStyle(nightMapStyle);
+
+  }
 }
+
+
