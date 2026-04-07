@@ -82,6 +82,7 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
   void initMarkers() {
    var myMarkers =  placeModel.map(
       (e) => Marker(
+        infoWindow: InfoWindow(title: e.name),
           position: e.latLng,
           markerId: MarkerId(e.id.toString()),
       ),
