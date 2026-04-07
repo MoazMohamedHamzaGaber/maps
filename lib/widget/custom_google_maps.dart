@@ -14,6 +14,7 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
   @override
   void initState() {
     initialCameraPosition = CameraPosition(
+      zoom: 10,
       target: LatLng(30.013492552269614, 31.212994217335012),
     );
     super.initState();
