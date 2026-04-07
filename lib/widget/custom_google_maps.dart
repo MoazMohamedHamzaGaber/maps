@@ -21,6 +21,7 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
     );
 
     initMarkers();
+    initPolyLines();
     super.initState();
   }
 
@@ -31,6 +32,7 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
   }
 
   Set<Marker> markers = {};
+  Set<Polyline> polylines = {};
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,7 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
         GoogleMap(
           initialCameraPosition: initialCameraPosition,
           markers: markers,
+          polylines: polylines,
           // cameraTargetBounds: CameraTargetBounds(
           //   LatLngBounds(
           //     northeast: LatLng(30.094453269704278, 31.33155580236429),
@@ -80,14 +83,30 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
   }
 
   void initMarkers() {
-   var myMarkers =  placeModel.map(
-      (e) => Marker(
-        infoWindow: InfoWindow(title: e.name),
-          position: e.latLng,
-          markerId: MarkerId(e.id.toString()),
-      ),
-    ).toSet();
+    var myMarkers = placeModel
+        .map(
+          (e) => Marker(
+            infoWindow: InfoWindow(title: e.name),
+            position: e.latLng,
+            markerId: MarkerId(e.id.toString()),
+          ),
+        )
+        .toSet();
 
-   markers.addAll(myMarkers);
+    markers.addAll(myMarkers);
+  }
+
+  void initPolyLines() {
+    Polyline myPolyLines = const Polyline(
+      polylineId: PolylineId('1'),
+      points: [
+        LatLng(30.00601664824596, 31.122438726749444),
+        LatLng(30.01612992354812, 31.163207463611027),
+        LatLng(30.03805256711961, 31.119404926979477),
+        LatLng(30.045849051158623, 31.139222459444863),
+      ],
+    );
+
+    polylines.add(myPolyLines);
   }
 }
