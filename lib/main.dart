@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:maps/widget/custom_google_maps.dart';
+import 'package:maps/widget/live_locations.dart';
 
 
 void main() {
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CustomGoogleMaps(),
+      home: LiveLocations(),
     );
   }
 }
