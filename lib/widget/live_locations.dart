@@ -21,7 +21,7 @@ class _LiveLocationsState extends State<LiveLocations> {
       target: LatLng(30.013492552269614, 31.212994217335012),
     );
     location =Location();
-    checkAndRequestLocationService();
+    myLocation();
     super.initState();
   }
 
@@ -46,30 +46,42 @@ class _LiveLocationsState extends State<LiveLocations> {
     );
   }
 
-  void checkAndRequestLocationService() async{
+  Future<void> checkAndRequestLocationService() async{
    var isServiceEnabled = await location.serviceEnabled();
 
    if(!isServiceEnabled){
      isServiceEnabled = await location.requestService();
      if(!isServiceEnabled){
-
+       // has error
      }
    }
-   checkAndRequestLocationPermission();
   }
-  void checkAndRequestLocationPermission() async{
+  Future<bool> checkAndRequestLocationPermission() async{
   var permissionStatus = await location.hasPermission();
-
+  if(permissionStatus == PermissionStatus.deniedForever){
+    return false;
+  }
   if(permissionStatus ==PermissionStatus.denied){
     permissionStatus =await location.requestPermission();
 
     if(permissionStatus != PermissionStatus.granted){
-      //  has error
+      return false;
     }
   }
+  return true;
   }
 
+  void getLocationData(){
+    location.onLocationChanged.listen((locationData){});
+  }
 
+  void myLocation() async{
+   await checkAndRequestLocationService();
+   var hasPermission = await checkAndRequestLocationPermission();
+   if(hasPermission) {
+     getLocationData();
+   }else{}
+  }
   void initMapStyle() async {
     var nightMapStyle = await DefaultAssetBundle.of(
       context,
