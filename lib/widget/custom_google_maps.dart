@@ -20,8 +20,9 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
       target: LatLng(30.013492552269614, 31.212994217335012),
     );
 
-    initMarkers();
-    initPolyLines();
+   // initMarkers();
+   // initPolyLines();
+    initPolygon();
     super.initState();
   }
 
@@ -33,6 +34,7 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
 
   Set<Marker> markers = {};
   Set<Polyline> polylines = {};
+  Set<Polygon> polygons = {};
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +42,9 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
       children: [
         GoogleMap(
           initialCameraPosition: initialCameraPosition,
-          markers: markers,
-          polylines: polylines,
+          polygons: polygons,
+          // markers: markers,
+          // polylines: polylines,
           // cameraTargetBounds: CameraTargetBounds(
           //   LatLngBounds(
           //     northeast: LatLng(30.094453269704278, 31.33155580236429),
@@ -73,7 +76,21 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
       ],
     );
   }
+  void initPolygon() {
+    Polygon polygon = Polygon(
+      fillColor: Colors.black.withOpacity(.5),
+      strokeWidth: 5,
+      points: [
+        LatLng(30.0224782936375, 31.140935337219926),
+        LatLng(30.019158979991634, 31.145308358373715),
+        LatLng(30.01795799491682, 31.14170591363469),
+        LatLng(30.02012642961292, 31.137217306018687),
+      ],
+        polygonId: PolygonId('1'),
+    );
 
+    polygons.add(polygon);
+  }
   void initMapStyle() async {
     var nightMapStyle = await DefaultAssetBundle.of(
       context,
@@ -135,3 +152,5 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
     polylines.add(myPolyLines2);
   }
 }
+
+
