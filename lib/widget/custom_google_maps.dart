@@ -22,7 +22,8 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
 
    // initMarkers();
    // initPolyLines();
-    initPolygon();
+    //initPolygon();
+    initCircle();
     super.initState();
   }
 
@@ -35,6 +36,7 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
   Set<Marker> markers = {};
   Set<Polyline> polylines = {};
   Set<Polygon> polygons = {};
+  Set<Circle> circle= {};
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +45,7 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
         GoogleMap(
           initialCameraPosition: initialCameraPosition,
           polygons: polygons,
+          circles: circle,
           // markers: markers,
           // polylines: polylines,
           // cameraTargetBounds: CameraTargetBounds(
@@ -90,6 +93,18 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
     );
 
     polygons.add(polygon);
+  }
+
+  void initCircle() {
+    Circle myCircle = Circle(
+      strokeColor: Colors.red,
+      strokeWidth: 4,
+      radius: 1000,
+      center: LatLng(30.017974675364673, 31.14164812040358),
+        circleId: CircleId('1'),
+    );
+
+    circle.add(myCircle);
   }
   void initMapStyle() async {
     var nightMapStyle = await DefaultAssetBundle.of(
@@ -152,5 +167,7 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
     polylines.add(myPolyLines2);
   }
 }
+
+
 
 
