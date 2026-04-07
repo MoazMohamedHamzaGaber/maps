@@ -50,23 +50,23 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
             initMapStyle();
           },
         ),
-        Positioned(
-          bottom: 16,
-          right: 16,
-          left: 16,
-          child: ElevatedButton(
-            onPressed: () {
-              CameraPosition newCameraPosition = CameraPosition(
-                zoom: 12,
-                target: LatLng(31.200515566474515, 29.961085975707423),
-              );
-              googleMapController.animateCamera(
-                CameraUpdate.newCameraPosition(newCameraPosition),
-              );
-            },
-            child: Text('Change Location'),
-          ),
-        ),
+        // Positioned(
+        //   bottom: 16,
+        //   right: 16,
+        //   left: 16,
+        //   child: ElevatedButton(
+        //     onPressed: () {
+        //       CameraPosition newCameraPosition = CameraPosition(
+        //         zoom: 12,
+        //         target: LatLng(31.200515566474515, 29.961085975707423),
+        //       );
+        //       googleMapController.animateCamera(
+        //         CameraUpdate.newCameraPosition(newCameraPosition),
+        //       );
+        //     },
+        //     child: Text('Change Location'),
+        //   ),
+        // ),
       ],
     );
   }
