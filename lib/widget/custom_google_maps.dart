@@ -98,6 +98,13 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
 
   void initPolyLines() {
     Polyline myPolyLines = const Polyline(
+      patterns: [
+        PatternItem.dot
+      ],
+      width: 5,
+      zIndex: 2,
+      color: Colors.red,
+      startCap: Cap.roundCap,
       polylineId: PolylineId('1'),
       points: [
         LatLng(30.00601664824596, 31.122438726749444),
@@ -107,6 +114,24 @@ class _CustomGoogleMapsState extends State<CustomGoogleMaps> {
       ],
     );
 
+    Polyline myPolyLines2 = const Polyline(
+      patterns: [
+        PatternItem.dot
+      ],
+      width: 5,
+      zIndex: 1,
+      color: Colors.black,
+      startCap: Cap.roundCap,
+      polylineId: PolylineId('2'),
+      points: [
+        LatLng(29.997864816146, 31.197290531043535),
+        LatLng(29.999797459343498, 31.172914616434714),
+        LatLng(30.014959968945686, 31.113541239918316),
+        LatLng(30.018508702043626, 31.107039565511204),
+      ],
+    );
+
     polylines.add(myPolyLines);
+    polylines.add(myPolyLines2);
   }
 }
