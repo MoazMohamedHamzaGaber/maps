@@ -55,6 +55,18 @@ class _LiveLocationsState extends State<LiveLocations> {
 
      }
    }
+   checkAndRequestLocationPermission();
+  }
+  void checkAndRequestLocationPermission() async{
+  var permissionStatus = await location.hasPermission();
+
+  if(permissionStatus ==PermissionStatus.denied){
+    permissionStatus =await location.requestPermission();
+
+    if(permissionStatus != PermissionStatus.granted){
+      //  has error
+    }
+  }
   }
 
 
