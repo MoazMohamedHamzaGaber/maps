@@ -64,6 +64,9 @@ class _LiveLocationsState extends State<LiveLocations> {
           position: LatLng(locationData.latitude!, locationData.longitude!),
         );
         markers.add(myLocationMarkers);
+        setState(() {
+
+        });
         googleMapController?.animateCamera(
           CameraUpdate.newCameraPosition(cameraPosition),
         );
