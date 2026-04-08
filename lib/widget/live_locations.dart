@@ -11,8 +11,8 @@ class LiveLocations extends StatefulWidget {
 
 class _LiveLocationsState extends State<LiveLocations> {
   late CameraPosition initialCameraPosition;
-  late GoogleMapController googleMapController;
-  late Location location ;
+  GoogleMapController? googleMapController;
+  late Location location;
 
   @override
   void initState() {
@@ -20,14 +20,16 @@ class _LiveLocationsState extends State<LiveLocations> {
       zoom: 12,
       target: LatLng(30.013492552269614, 31.212994217335012),
     );
-    location =Location();
+    location = Location();
     myLocation();
     super.initState();
   }
 
+  Set<Marker> markers = {};
+
   @override
   void dispose() {
-    googleMapController.dispose();
+    googleMapController!.dispose();
     super.dispose();
   }
 
@@ -36,6 +38,7 @@ class _LiveLocationsState extends State<LiveLocations> {
     return Stack(
       children: [
         GoogleMap(
+          markers: markers,
           initialCameraPosition: initialCameraPosition,
           onMapCreated: (controller) {
             googleMapController = controller;
@@ -46,48 +49,62 @@ class _LiveLocationsState extends State<LiveLocations> {
     );
   }
 
-  Future<void> checkAndRequestLocationService() async{
-   var isServiceEnabled = await location.serviceEnabled();
+  Future<void> checkAndRequestLocationService() async {
+    var isServiceEnabled = await location.serviceEnabled();
 
-   if(!isServiceEnabled){
-     isServiceEnabled = await location.requestService();
-     if(!isServiceEnabled){
-       // has error
-     }
-   }
-  }
-  Future<bool> checkAndRequestLocationPermission() async{
-  var permissionStatus = await location.hasPermission();
-  if(permissionStatus == PermissionStatus.deniedForever){
-    return false;
-  }
-  if(permissionStatus ==PermissionStatus.denied){
-    permissionStatus =await location.requestPermission();
-
-    if(permissionStatus != PermissionStatus.granted){
-      return false;
+    if (!isServiceEnabled) {
+      isServiceEnabled = await location.requestService();
+      if (!isServiceEnabled) {
+        // has error
+      }
     }
   }
-  return true;
+
+  Future<bool> checkAndRequestLocationPermission() async {
+    var permissionStatus = await location.hasPermission();
+    if (permissionStatus == PermissionStatus.deniedForever) {
+      return false;
+    }
+    if (permissionStatus == PermissionStatus.denied) {
+      permissionStatus = await location.requestPermission();
+
+      if (permissionStatus != PermissionStatus.granted) {
+        return false;
+      }
+    }
+    return true;
   }
 
-  void getLocationData(){
-    location.onLocationChanged.listen((locationData){});
+  void getLocationData() {
+    location.onLocationChanged.listen((locationData) {
+      var cameraPosition = CameraPosition(
+        zoom: 15,
+        target: LatLng(locationData.latitude!, locationData.longitude!),
+      );
+      var myLocationMarkers =  Marker(
+          markerId: MarkerId('1'),
+          position: LatLng(locationData.latitude!, locationData.longitude!),
+        );
+      markers.add(myLocationMarkers);
+      googleMapController?.animateCamera(
+        CameraUpdate.newCameraPosition(cameraPosition),
+      );
+    });
   }
 
-  void myLocation() async{
-   await checkAndRequestLocationService();
-   var hasPermission = await checkAndRequestLocationPermission();
-   if(hasPermission) {
-     getLocationData();
-   }else{}
+  void myLocation() async {
+    await checkAndRequestLocationService();
+    var hasPermission = await checkAndRequestLocationPermission();
+    if (hasPermission) {
+      getLocationData();
+    } else {}
   }
+
   void initMapStyle() async {
     var nightMapStyle = await DefaultAssetBundle.of(
       context,
     ).loadString('assets/map_styles/night_map_style.json');
 
-    googleMapController.setMapStyle(nightMapStyle);
+    googleMapController!.setMapStyle(nightMapStyle);
   }
 }
-
